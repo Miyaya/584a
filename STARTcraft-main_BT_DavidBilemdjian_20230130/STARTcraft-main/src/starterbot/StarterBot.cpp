@@ -139,7 +139,7 @@ void StarterBot::buildAdditionalSupply()
 // Draw some relevent information to the screen to help us debug the bot
 void StarterBot::drawDebugInformation()
 {
-    BWAPI::Broodwar->drawTextScreen(BWAPI::Position(10, 10), "Hello, nice to meet you!\n");
+    BWAPI::Broodwar->drawTextScreen(BWAPI::Position(10, 10), "INF584\n");
     Tools::DrawUnitCommands();
     Tools::DrawUnitBoundingBoxes();
 }

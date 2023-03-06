@@ -79,11 +79,13 @@
     <ClCompile Include="..\..\src\starterbot\ReplayParser.cpp" />
     <ClCompile Include="..\..\src\starterbot\StarterBot.cpp" />
     <ClCompile Include="..\..\src\starterbot\Tools.cpp" />
+    <ClCompile Include="BT_ACTION_BUILD_ONE_DRONE.cpp" />
+    <ClCompile Include="BT_ACTION_BUILD_ONE_DRONE.h" />
   </ItemGroup>
-  <ItemGroup>
+  <!-- <ItemGroup>
     <None Include="BT_ACTION_BUILD_ONE_DRONE.cpp" />
     <None Include="BT_ACTION_BUILD_ONE_DRONE.h" />
-  </ItemGroup>
+  </ItemGroup> -->
   <PropertyGroup Label="Globals">
     <ProjectName>StarterBot</ProjectName>
     <ProjectGuid>{B2D2AD6C-D98B-42D0-8E4B-3C79D9DB27B7}</ProjectGuid>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "MapTools.h"
-#include "BT.h"
+#include "BT/BT.h"
 #include <BWAPI.h>
-#include "Data.h"
+#include "BT/Data.h"
 
 class StarterBot
 {

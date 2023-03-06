@@ -9,6 +9,11 @@ StarterBot::StarterBot()
     
     BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
 
+    // Build a drone
+    // TODO: add a BT_LEAF?
+    // BT_ACTION_BUILD_ONE_DRONE* pBuildOneDrone = new BT_ACTION_BUILD_ONE_DRONE("BuildOneDrone", pBT);
+
+
     //Farming Minerals forever
     BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
     BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsForeverRepeater);
@@ -23,6 +28,7 @@ StarterBot::StarterBot()
     BT_DECO_REPEATER* pBuildSupplyProviderForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSupplyProvider", pParallelSeq, 0, true, false);
     BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY* pNotEnoughSupply = new BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY("NotEnoughSupply", pBuildSupplyProviderForeverRepeater);
     BT_ACTION_BUILD_SUPPLY_PROVIDER* pBuildSupplyProvider = new BT_ACTION_BUILD_SUPPLY_PROVIDER("BuildSupplyProvider", pNotEnoughSupply);
+
 
     pData = new Data();
     pData->currMinerals = 0;
@@ -42,6 +48,7 @@ void StarterBot::onStart()
     BWAPI::Broodwar->setFrameSkip(0);
     
     // Enable the flag that tells BWAPI top let users enter input while bot plays
+
     BWAPI::Broodwar->enableFlag(BWAPI::Flag::UserInput);
 
     // Call MapTools OnStart

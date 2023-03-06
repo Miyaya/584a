@@ -166,8 +166,4 @@
       <UniqueIdentifier>{f7d3a676-4252-4269-9d78-432aabc0f416}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="BT_ACTION_BUILD_ONE_DRONE.cpp" />
-    <None Include="BT_ACTION_BUILD_ONE_DRONE.h" />
-  </ItemGroup>
 </Project>

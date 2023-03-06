@@ -1,5 +1,4 @@
 #include "BT_ACTION_TRAIN_WORKER.h"
-#include "../../BT_ACTION_BUILD_ONE_DRONE.h"
 #include "../../Tools.h"
 #include "../Data.h"
 
@@ -28,8 +27,7 @@ BT_NODE::State BT_ACTION_TRAIN_WORKER::TrainWorker(void* data)
     // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
 
     if (myDepot && !myDepot->isTraining()) { 
-        //myDepot->train(workerType);
-        BT_ACTION_BUILD_ONE_DRONE::BuildOneDrone(data);
+        myDepot->train(workerType);
         BWAPI::Error error = BWAPI::Broodwar->getLastError();
         if(error!=BWAPI::Errors::None)
             return BT_NODE::FAILURE;

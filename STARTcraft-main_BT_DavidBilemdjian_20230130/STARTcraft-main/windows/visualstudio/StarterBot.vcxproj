@@ -79,8 +79,6 @@
     <ClCompile Include="..\..\src\starterbot\ReplayParser.cpp" />
     <ClCompile Include="..\..\src\starterbot\StarterBot.cpp" />
     <ClCompile Include="..\..\src\starterbot\Tools.cpp" />
-    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_BUILD_ONE_DRONE.cpp" />
-    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_BUILD_ONE_DRONE.h" />
   </ItemGroup>
   <!-- <ItemGroup>
     <None Include="BT_ACTION_BUILD_ONE_DRONE.cpp" />

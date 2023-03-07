@@ -29,6 +29,15 @@ StarterBot::StarterBot()
     BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY* pNotEnoughSupply = new BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY("NotEnoughSupply", pBuildSupplyProviderForeverRepeater);
     BT_ACTION_BUILD_SUPPLY_PROVIDER* pBuildSupplyProvider = new BT_ACTION_BUILD_SUPPLY_PROVIDER("BuildSupplyProvider", pNotEnoughSupply);
 
+    //Build Spawning Pool
+    BT_DECO_REPEATER* pBuildSpawningPoolForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSpawningPool", pParallelSeq, 0, true, false);
+    BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
+    BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
+
+    //Training Zerglings
+    BT_DECO_REPEATER* pTrainingZerglingsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingZerglings", pParallelSeq, 0, true, false);
+    BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS* pNotEnoughZerglings = new BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS("NotEnoughZerglings", pTrainingZerglingsForeverRepeater);
+    BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainWorker", pNotEnoughZerglings);
 
     pData = new Data();
     pData->currMinerals = 0;
@@ -38,6 +47,9 @@ StarterBot::StarterBot()
 
     pData->nWantedWorkersTotal = NWANTED_WORKERS_TOTAL;
     pData->nWantedWorkersFarmingMinerals = NWANTED_WORKERS_FARMING_MINERALS;
+    pData->nWantedZerglingsTotal = NWANTED_ZERGLINGS_TOTAL;
+
+    pData->nWantedSpawningPoolTotal = NWANTED_SPAWNING_POOL_TOTAL;
 }
 
 // Called when the bot starts!

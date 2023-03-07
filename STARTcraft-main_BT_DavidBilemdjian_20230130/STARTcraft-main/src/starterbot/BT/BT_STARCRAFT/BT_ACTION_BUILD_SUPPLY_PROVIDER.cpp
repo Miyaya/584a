@@ -22,8 +22,20 @@ BT_NODE::State BT_ACTION_BUILD_SUPPLY_PROVIDER::BuildSupplyProvider(void* data)
 
     // let's build a supply provider
     const BWAPI::UnitType supplyProviderType = BWAPI::Broodwar->self()->getRace().getSupplyProvider();
+    const BWAPI::Unit myDepot = Tools::GetDepot();
 
     const bool startedBuilding = Tools::BuildBuilding(supplyProviderType);
+
+    if (myDepot && !myDepot->isTraining())
+    {
+        myDepot->train(supplyProviderType);
+        //BWAPI::Error error = BWAPI::Broodwar->getLastError();
+        //if (error != BWAPI::Errors::None)
+        //    return BT_NODE::FAILURE;
+        //else return BT_NODE::SUCCESS;
+    }
+
+    //return BT_NODE::FAILURE;
 
     if (startedBuilding)
         BWAPI::Broodwar->printf("Started Building %s", supplyProviderType.getName().c_str());

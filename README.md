@@ -8,12 +8,12 @@ All the trainings and buildings are going simultaneously, usually there will be 
 1. Train 6 drones (might be 7 due to the problem above). Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_WORKERS```
 - ```BT_ACTION_TRAIN_WORKER```
-3. (_currently disabled, switch on by modifying_ ```BT/Data.h```) ~~Train overlords when there's not enough control~~. Related files: 
+2. (_currently disabled, switch on by modifying_ ```BT/Data.h```) ~~Train overlords when there's not enough control~~. Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY```
 - ```BT_ACTION_BUILD_SUPPLY_PROVIDER```
-4. Build 1 spawning pool (might be 2 due to the problem above). Related files: 
+3. Build 1 spawning pool (might be 2 due to the problem above). Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL```
 - ```BT_ACTION_BUILD_SPAWNING_POOL```
-5. Train 6 Zerglings (might be 4 or 8 due to the problem above). Related files: 
+4. Train 6 Zerglings (might be 4 or 8 due to the problem above). Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS```
 - ```BT_ACTION_TRAIN_ZERGLING```

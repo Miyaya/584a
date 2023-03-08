@@ -22,13 +22,7 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL::IsThereNotEnoughSpawningPool(vo
 	const BWAPI::UnitType unitType = BWAPI::UnitTypes::Enum::Enum::Zerg_Spawning_Pool;
 	const int spawningPoolOwned = Tools::CountUnitsOfType(unitType, BWAPI::Broodwar->self()->getUnits());
 
-
-	const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
-	const int workersOwned = Tools::CountUnitsOfType(workerType, BWAPI::Broodwar->self()->getUnits());
-	if (workersOwned < 5)
-		return 0;
-	else
-		// If we already have a spawning pool, we don't need to do anything
-		return spawningPoolOwned < pData->nWantedSpawningPoolTotal;
+	// If we already have a spawning pool, we don't need to do anything
+	return spawningPoolOwned < pData->nWantedSpawningPoolTotal;
 
 }

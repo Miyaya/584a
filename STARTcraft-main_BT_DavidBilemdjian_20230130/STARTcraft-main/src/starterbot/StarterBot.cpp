@@ -6,8 +6,32 @@
 StarterBot::StarterBot()
 {
     pBT = new BT_DECORATOR("EntryPoint", nullptr);
+   
+    BT_SEQUENCER* pSeq = new BT_SEQUENCER("FirstIter", pBT, 10);
+
+
+    BT_DECO_CONDITION_NOT_ENOUGH_WORKERS* pNotEnoughWorkers = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS("NotEnoughWorkers", pSeq);
+    BT_ACTION_TRAIN_WORKER* pTrainWorker = new BT_ACTION_TRAIN_WORKER("TrainWorker", pNotEnoughWorkers);
+    BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pTrainWorker);
+
+
+    //***********************How we can modify it we only need mineral to make spawning pool in this moment
+    BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pSeq, 0, true, false);
+    BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsForeverRepeater);
+    BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS* pSendWorkerToMinerals = new BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS("SendWorkerToMinerals", pNotEnoughWorkersFarmingMinerals);
+    BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pSendWorkerToMinerals);
+
+
+    BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pSeq);
+    BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
+    BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pBuildSpawningPool);
     
+
+
+
     BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
+
+   
 
     //Farming Minerals forever
     BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
@@ -15,9 +39,9 @@ StarterBot::StarterBot()
     BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS* pSendWorkerToMinerals = new BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS("SendWorkerToMinerals", pNotEnoughWorkersFarmingMinerals);
 
     //Training Workers
-    BT_DECO_REPEATER* pTrainingWorkersForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingWorkers", pParallelSeq, 0, true, false);
-    BT_DECO_CONDITION_NOT_ENOUGH_WORKERS* pNotEnoughWorkers = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS("NotEnoughWorkers", pTrainingWorkersForeverRepeater);
-    BT_ACTION_TRAIN_WORKER* pTrainWorker = new BT_ACTION_TRAIN_WORKER("TrainWorker", pNotEnoughWorkers);
+    //BT_DECO_REPEATER* pTrainingWorkersForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingWorkers", pParallelSeq, 0, true, false);
+    //BT_DECO_CONDITION_NOT_ENOUGH_WORKERS* pNotEnoughWorkers = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS("NotEnoughWorkers", pTrainingWorkersForeverRepeater);
+    //BT_ACTION_TRAIN_WORKER* pTrainWorker = new BT_ACTION_TRAIN_WORKER("TrainWorker", pNotEnoughWorkers);
 
     //Build Additional Supply Provider
     BT_DECO_REPEATER* pBuildSupplyProviderForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSupplyProvider", pParallelSeq, 0, true, false);
@@ -25,14 +49,14 @@ StarterBot::StarterBot()
     BT_ACTION_BUILD_SUPPLY_PROVIDER* pBuildSupplyProvider = new BT_ACTION_BUILD_SUPPLY_PROVIDER("BuildSupplyProvider", pNotEnoughSupply);
 
     //Build Spawning Pool
-    BT_DECO_REPEATER* pBuildSpawningPoolForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSpawningPool", pParallelSeq, 0, true, false);
-    BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
-    BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
+    //BT_DECO_REPEATER* pBuildSpawningPoolForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSpawningPool", pParallelSeq, 0, true, false);
+    //BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
+    //BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
 
     //Training Zerglings
     BT_DECO_REPEATER* pTrainingZerglingsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingZerglings", pParallelSeq, 0, true, false);
     BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS* pNotEnoughZerglings = new BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS("NotEnoughZerglings", pTrainingZerglingsForeverRepeater);
-    BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainWorker", pNotEnoughZerglings);
+    BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainZergling", pNotEnoughZerglings);
 
     pData = new Data();
     pData->currMinerals = 0;

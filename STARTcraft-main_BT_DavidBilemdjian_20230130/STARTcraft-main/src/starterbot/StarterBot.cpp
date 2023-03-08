@@ -15,24 +15,20 @@ StarterBot::StarterBot()
     BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pTrainWorker);
 
 
-    //***********************How we can modify it we only need mineral to make spawning pool in this moment
-    BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pSeq, 0, true, false);
-    BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsForeverRepeater);
+    BT_DECO_UNTIL_SUCCESS* pFarmingMineralsUntilSuccess = new BT_DECO_UNTIL_SUCCESS("UntilSuccessFarmingMinerals", pSeq);
+    BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsUntilSuccess);
     BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS* pSendWorkerToMinerals = new BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS("SendWorkerToMinerals", pNotEnoughWorkersFarmingMinerals);
-    BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pSendWorkerToMinerals);
 
 
     BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pSeq);
     BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
     BT_DECO_RETURN_SUCCESS* pTrainworkerSuc = new BT_DECO_RETURN_SUCCESS("TrainWorker success", pBuildSpawningPool);
-    
-
-
-
-    BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
-
    
 
+
+    BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pSeq, 10);
+
+ 
     //Farming Minerals forever
     BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
     BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsForeverRepeater);

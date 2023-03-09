@@ -25,6 +25,9 @@ BT_NODE::State BT_ACTION_TRAIN_WORKER::TrainWorker(void* data)
 
     // if we have a valid depot unit and it's currently not training something, train a worker
     // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
+    /*for (auto& unit : BWAPI::Broodwar->self()->getUnits())
+        if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Build)
+            return BT_NODE::FAILURE;*/
 
     if (myDepot && !myDepot->isTraining()) { 
         myDepot->train(workerType);

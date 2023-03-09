@@ -3,23 +3,30 @@
 #include <BWAPI.h>
 
 #define THRESHOLD1_MINERALS 200
-#define THRESHOLD1_UNUSED_SUPPLY -1 //Never build supply
+#define THRESHOLD1_UNUSED_SUPPLY 1
 
-#define NWANTED_WORKERS_TOTAL 6
+#define NWANTED_WORKERS_TOTAL 5
+#define NWANTED_OVERLORDS_TOTAL 1
 #define NWANTED_WORKERS_FARMING_MINERALS 10
 #define NWANTED_ZERGLINGS_TOTAL 6
 
 #define NWANTED_SPAWNING_POOL_TOTAL 1
 
 
-class Data {
+class Data
+{
 public:
+
+	int phase;
+	BWAPI::Position selfLocation;
+	BWAPI::Position enemyLocation;
 	int currMinerals;
 	int thresholdMinerals;
 	int currSupply;
 	int thresholdSupply;
 
 	int nWantedWorkersTotal;
+	int nWantedOverlordsTotal;
 	int nWantedWorkersFarmingMinerals;
 	int nWantedZerglingsTotal;
 

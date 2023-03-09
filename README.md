@@ -11,9 +11,12 @@ NOTE:
 2. (_currently disabled, switch on by modifying_ ```BT/Data.h```) ~~Train overlords when there's not enough control~~. Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY```
 - ```BT_ACTION_BUILD_SUPPLY_PROVIDER```
-3. Build 1 spawning pool (might be 2 due to the problem above). Related files: 
+3. Build 1 spawning pool . Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL```
 - ```BT_ACTION_BUILD_SPAWNING_POOL```
-4. Train 6 Zerglings (might be 4 or 8 due to the problem above). Related files: 
+4. Train 6 Zerglings . Related files: 
 - ```BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS```
 - ```BT_ACTION_TRAIN_ZERGLING```
+5. Attack . Related files: 
+- ```BT_DECO_CONDITION_READY_TO_ATTACK```
+- ```BT_ACTION_ATTACK```

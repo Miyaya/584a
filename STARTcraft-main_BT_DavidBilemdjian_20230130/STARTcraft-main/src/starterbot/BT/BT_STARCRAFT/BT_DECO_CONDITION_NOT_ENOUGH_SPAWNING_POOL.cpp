@@ -25,7 +25,8 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL::IsThereNotEnoughSpawningPool(vo
 	if (spawningPoolOwned < pData->nWantedSpawningPoolTotal)
 		return true;
 
-	pData->phase = 1;
+	if(pData->phase < 1)
+		pData->phase = 1;
 	return false;
 
 }

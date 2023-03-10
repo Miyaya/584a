@@ -1,4 +1,4 @@
-﻿#include "BT_ACTION_ATTACK.h"
+#include "BT_ACTION_ATTACK.h"
 #include "../../Tools.h"
 #include "../Data.h"
 #include <set>
@@ -25,31 +25,20 @@ BT_NODE::State BT_ACTION_ATTACK::Attack(void* data)
 
 
 	BWAPI::Unitset combatUnits;
-	BWAPI::Unitset enemyUnits = BWAPI::Broodwar->enemy()->getUnits();
-	BWAPI::Unitset enemyUnitsSpotted;
-	BWAPI::Unitset enemyCanAttackUnits;
-	BWAPI::Unit closestEnemyUnit;
 
 	for (auto& unit : BWAPI::Broodwar->self()->getUnits())
 		if (unit->getType().canAttack() && unit->getType().canMove() && !unit->getType().isWorker())
 			combatUnits.insert(unit);
 
-	for (auto& unit : enemyUnits)
-		if (unit->getType().canAttack() && unit->getType().canMove() && !unit->getType().isWorker())
-			enemyCanAttackUnits.insert(unit);
+	//_sleep(10);
 
-	_sleep(10);
-	for (auto& enemyUnit : enemyUnits)
-	{
-		if (enemyUnit->canAttack() && enemyUnit->canMove() && !enemyUnit->getType().isBuilding())
-			combatUnits.attack(enemyUnit);
-		else if (!enemyUnit->getType().isBuilding())
-			combatUnits.attack(enemyUnit);
+	for (auto& unit : combatUnits)
+		if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Attack_Unit && unit->isVisible())
+			continue;
+		else if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Patrol)
+			continue;
 		else
-			combatUnits.attack(enemyUnit);
-	}
-
-	if (enemyUnits.empty())
+			unit->patrol(pData->enemyLocation);
 		combatUnits.move(pData->enemyLocation);
 
 	if (combatUnits.empty())

@@ -21,8 +21,21 @@ std::string BT_ACTION_TRAIN_ZERGLING::GetDescription()
 BT_NODE::State BT_ACTION_TRAIN_ZERGLING::TrainZergling(void* data)
 {
     Data* pData = (Data*)data;
+    BWAPI::UnitType unitType;
 
-    const BWAPI::UnitType unitType = BWAPI::UnitTypes::Zerg_Zergling;
+    switch (pData->phase)
+    {
+        default:
+            unitType = BWAPI::UnitTypes::Zerg_Zergling;
+            break;
+        case 1:
+            unitType = BWAPI::UnitTypes::Zerg_Zergling;
+            break;
+        case 2:
+            unitType = BWAPI::UnitTypes::Zerg_Zergling;
+            break;
+    }
+    //unitType = BWAPI::UnitTypes::Zerg_Zergling;
     const BWAPI::Unit myDepot = Tools::GetDepot();
 
     // if we have a valid depot unit and it's currently not training something, train a worker

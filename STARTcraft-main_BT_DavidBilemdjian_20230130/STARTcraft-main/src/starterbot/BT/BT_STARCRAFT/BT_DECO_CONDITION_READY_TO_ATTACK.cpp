@@ -23,26 +23,12 @@ bool BT_DECO_CONDITION_READY_TO_ATTACK::IsReadyToAttack(void* data)
 	switch (pData->phase)
 	{
 		default:
-			return false;
+			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
 		case 0:
 			return false;
 		case 1:
-			if (zerglingsOwned >= pData->nWantedZerglingsTotal)
-			{
-				pData->phase = 2;
-				pData->nWantedWorkersTotal = 12;
-				pData->thresholdSupply = 1;
-				return true;
-			}
 			return false;
 		case 2:
-			if (zerglingsOwned >= pData->nWantedZerglingsTotal)
-			{
-				pData->phase = 2;
-				pData->nWantedWorkersTotal = 16;
-				pData->thresholdSupply = 2;
-				return true;
-			}
-			return false;
+			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
 	}
 }

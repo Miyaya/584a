@@ -14,8 +14,13 @@ StarterBot::StarterBot()
 	for (auto& startLocation : startLocations)
 		if (startLocation == selfLocation)
 			pData->selfLocation = { startLocation.x * 32, startLocation.y * 32 };
+		else if (startLocation.x < selfLocation.x)
+			pData->enemyLocation = { startLocation.x * 32 - 100, startLocation.y * 32 };
+		else if (startLocation.x > selfLocation.x)
+			pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
 		else
 			pData->enemyLocation = { startLocation.x * 32, startLocation.y * 32 };
+	BWAPI::Broodwar->printf("Enemy race: %s", BWAPI::Broodwar->enemy()->getRace().c_str());
 	BWAPI::Broodwar->printf("Enemy start location found at (%d, %d)", pData->enemyLocation.x, pData->enemyLocation.y);
 
 	BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
@@ -50,9 +55,14 @@ StarterBot::StarterBot()
 	BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS* pNotEnoughZerglings = new BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS("NotEnoughZerglings", pTrainingZerglingsForeverRepeater);
 	BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainWorker", pNotEnoughZerglings);
 
+	//Launch Harass
+	BT_DECO_REPEATER* pHarassForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingHarass", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_READY_TO_HARASS* pReadyToHarass = new BT_DECO_CONDITION_READY_TO_HARASS("ReadyToHarass", pHarassForeverRepeater);
+	BT_ACTION_HARASS* pHarass = new BT_ACTION_HARASS("Harass", pReadyToHarass);
+
 	//Launch Attack
-	BT_DECO_REPEATER* pATttackForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingAttack", pParallelSeq, 0, true, false);
-	BT_DECO_CONDITION_READY_TO_ATTACK* pReadyToAttack = new BT_DECO_CONDITION_READY_TO_ATTACK("ReadyToAttack", pATttackForeverRepeater);
+	BT_DECO_REPEATER* pAttackForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingAttack", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_READY_TO_ATTACK* pReadyToAttack = new BT_DECO_CONDITION_READY_TO_ATTACK("ReadyToAttack", pAttackForeverRepeater);
 	BT_ACTION_ATTACK* pAttack = new BT_ACTION_ATTACK("Attack", pReadyToAttack);
 
 	pData->phase = 0;

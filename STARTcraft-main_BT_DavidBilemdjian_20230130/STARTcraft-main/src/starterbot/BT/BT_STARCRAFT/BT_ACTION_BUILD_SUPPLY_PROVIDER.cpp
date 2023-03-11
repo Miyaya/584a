@@ -2,43 +2,39 @@
 #include "../../Tools.h"
 #include "../Data.h"
 
-BT_ACTION_BUILD_SUPPLY_PROVIDER::BT_ACTION_BUILD_SUPPLY_PROVIDER(std::string name,BT_NODE* parent)
-    :  BT_ACTION(name,parent) {}
+BT_ACTION_BUILD_SUPPLY_PROVIDER::BT_ACTION_BUILD_SUPPLY_PROVIDER(std::string name, BT_NODE* parent)
+	: BT_ACTION(name, parent) {}
 
 BT_NODE::State BT_ACTION_BUILD_SUPPLY_PROVIDER::Evaluate(void* data)
 {
-    return ReturnState(BuildSupplyProvider(data));
+	return ReturnState(BuildSupplyProvider(data));
 }
 
 std::string BT_ACTION_BUILD_SUPPLY_PROVIDER::GetDescription()
 {
-    return "BUILD SUPPLY PROVIDER";
+	return "BUILD SUPPLY PROVIDER";
 }
 
 
 BT_NODE::State BT_ACTION_BUILD_SUPPLY_PROVIDER::BuildSupplyProvider(void* data)
 {
-    Data* pData = (Data*)data;
+	Data* pData = (Data*)data;
 
-    // let's build a supply provider
-    const BWAPI::UnitType supplyProviderType = BWAPI::Broodwar->self()->getRace().getSupplyProvider();
-    const BWAPI::Unit myDepot = Tools::GetDepot();
+	// let's build a supply provider
+	const BWAPI::UnitType supplyProviderType = BWAPI::UnitTypes::Zerg_Overlord;
+	const BWAPI::Unitset myUnits = BWAPI::Broodwar->self()->getUnits();
 
-    const bool startedBuilding = Tools::BuildBuilding(supplyProviderType);
+	//const bool startedBuilding = Tools::BuildBuilding(supplyProviderType);
 
-    if (myDepot && !myDepot->isTraining())
-    {
-        myDepot->train(supplyProviderType);
-        //BWAPI::Error error = BWAPI::Broodwar->getLastError();
-        //if (error != BWAPI::Errors::None)
-        //    return BT_NODE::FAILURE;
-        //else return BT_NODE::SUCCESS;
-    }
+	for (auto unit : myUnits)
+		if (unit->getType() == BWAPI::UnitTypes::Zerg_Larva)
+		{
+			unit->morph(supplyProviderType);
+			BWAPI::Error error = BWAPI::Broodwar->getLastError();
+			if (error != BWAPI::Errors::None)
+				return BT_NODE::FAILURE;
+			else return BT_NODE::SUCCESS;
+		}
 
-    //return BT_NODE::FAILURE;
-
-    if (startedBuilding)
-        BWAPI::Broodwar->printf("Started Building %s", supplyProviderType.getName().c_str());
-
-    return startedBuilding ? BT_NODE::SUCCESS:BT_NODE::FAILURE;
+	return BT_NODE::FAILURE;
 }

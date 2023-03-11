@@ -11,12 +11,15 @@ BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL::BT_DECO_CONDITION_NOT_ENOUGH_SPAWNIN
 
 std::string BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL::GetDescription()
 {
-	return "DECO_CONDITION_NOT_ENOUGH_SUPPLY";
+	return "BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL";
 }
 
 bool BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL::IsThereNotEnoughSpawningPool(void* data)
 {
 	Data* pData = (Data*)data;
+
+	if (BWAPI::Broodwar->self()->minerals() < 200)
+		return false;
 
 	// Get the amount of spawning pool we currently have
 	const BWAPI::UnitType unitType = BWAPI::UnitTypes::Zerg_Spawning_Pool;

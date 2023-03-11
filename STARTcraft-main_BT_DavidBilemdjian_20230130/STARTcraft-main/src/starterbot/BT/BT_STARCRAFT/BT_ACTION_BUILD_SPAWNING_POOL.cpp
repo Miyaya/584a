@@ -14,7 +14,7 @@ BT_NODE::State BT_ACTION_BUILD_SPAWNING_POOL::Evaluate(void* data)
 
 std::string BT_ACTION_BUILD_SPAWNING_POOL::GetDescription()
 {
-	return "BUILD SUPPLY PROVIDER";
+	return "BUILD SPAWNING POOL";
 }
 
 
@@ -32,9 +32,6 @@ BT_NODE::State BT_ACTION_BUILD_SPAWNING_POOL::BuildSpawningPool(void* data)
 
 	if (startedBuilding)
 		BWAPI::Broodwar->printf("Started Building %s", unitType.getName().c_str());
-
-	if (pData->nWantedWorkersTotal < 6)
-		pData->nWantedWorkersTotal = 6;
 
 	return startedBuilding ? BT_NODE::SUCCESS : BT_NODE::FAILURE;
 }

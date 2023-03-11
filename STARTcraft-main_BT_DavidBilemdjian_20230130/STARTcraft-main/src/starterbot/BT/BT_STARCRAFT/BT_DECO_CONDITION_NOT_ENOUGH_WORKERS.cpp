@@ -1,4 +1,4 @@
-#include "BT_DECO_CONDITION_NOT_ENOUGH_WORKERS.h"
+﻿#include "BT_DECO_CONDITION_NOT_ENOUGH_WORKERS.h"
 #include "../Data.h"
 #include <BWAPI.h>
 #include "../../Tools.h"
@@ -18,19 +18,30 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_WORKERS::IsThereNotEnoughWorkers(void* data)
 {
 	Data* pData = (Data*)data;
 
+	//BWAPI::Broodwar->printf("PHASE: %d", pData->phase);
+	
 	switch (pData->phase)
 	{
+		default:
+			break;
 		case 0:
 			if (BWAPI::Broodwar->self()->minerals() >= 200)
 				return false;
+		case 1:
+		case 2:
+			if (BWAPI::Broodwar->self()->gas() >= 100 &&
+				BWAPI::Broodwar->self()->minerals() >= 150)
+				for (auto& unit : BWAPI::Broodwar->self()->getUnits())
+					if (unit->getType() == BWAPI::UnitTypes::Zerg_Hatchery && unit->isCompleted())
+					{
+						unit->morph(BWAPI::UnitTypes::Zerg_Lair);
+						pData->phase = 3;
+						break;
+					}
 	}
 
 	const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
 	const int workersOwned = Tools::CountUnitsOfType(workerType, BWAPI::Broodwar->self()->getUnits());
-	const int morphing = Tools::CountUnitsOfType(BWAPI::UnitTypes::Zerg_Egg, BWAPI::Broodwar->self()->getUnits());
-
-	if (morphing > 0)
-		return false;
 
 	return workersOwned < pData->nWantedWorkersTotal;
 }

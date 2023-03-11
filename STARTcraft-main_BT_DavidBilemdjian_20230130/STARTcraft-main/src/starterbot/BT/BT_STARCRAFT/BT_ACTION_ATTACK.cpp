@@ -30,7 +30,7 @@ BT_NODE::State BT_ACTION_ATTACK::Attack(void* data)
 		if (unit->getType().canAttack() && unit->getType().canMove() && !unit->getType().isWorker())
 			combatUnits.insert(unit);
 
-	//_sleep(10);
+
 
 	for (auto& unit : combatUnits)
 		if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Attack_Unit && unit->isVisible())
@@ -39,7 +39,7 @@ BT_NODE::State BT_ACTION_ATTACK::Attack(void* data)
 			continue;
 		else
 			unit->patrol(pData->enemyLocation);
-		combatUnits.move(pData->enemyLocation);
+	combatUnits.move(pData->enemyLocation);
 
 	if (combatUnits.empty())
 		return BT_NODE::SUCCESS;

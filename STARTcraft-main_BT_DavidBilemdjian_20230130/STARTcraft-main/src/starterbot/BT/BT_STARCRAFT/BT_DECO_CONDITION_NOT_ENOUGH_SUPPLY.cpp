@@ -16,26 +16,26 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY::IsThereNotEnoughSupply(void *data)
 {
     Data* pData = (Data*)data;
 
-    const int morphing = Tools::CountUnitsOfType(BWAPI::UnitTypes::Zerg_Egg, BWAPI::Broodwar->self()->getUnits());
-
-    if (morphing > 0)
+    if (BWAPI::Broodwar->self()->minerals() < 100)
         return false;
 
     // Get the amount of supply supply we currently have unused
     const int unusedSupply = Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed();
 
     // If we have a sufficient amount of supply, we don't need to do anything
-    switch (pData->phase)
-    {
-        default:
-            return false;
-        case 0:
-            return false;
-        case 1:
-            return unusedSupply < pData->thresholdSupply;
-        case 2:
-            return unusedSupply < pData->thresholdSupply;
-    }
+    //switch (pData->phase)
+    //{
+    //    default:
+    //        return unusedSupply < pData->thresholdSupply;
+    //    case 0:
+    //    case 1:
+    //        //return false;
+    //    case 2:
+    //    case 3:
+    //    case 4:
+    //        //pData->nWantedWorkersTotal = Tools::GetTotalSupply(true);
+    //        return unusedSupply < pData->thresholdSupply;
+    //}
     return unusedSupply < pData->thresholdSupply;
 
 }

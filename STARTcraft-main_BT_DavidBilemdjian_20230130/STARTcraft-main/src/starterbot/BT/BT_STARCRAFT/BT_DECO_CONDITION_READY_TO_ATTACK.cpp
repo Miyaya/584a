@@ -19,16 +19,20 @@ bool BT_DECO_CONDITION_READY_TO_ATTACK::IsReadyToAttack(void* data)
 	Data* pData = (Data*)data;
 
 	const BWAPI::UnitType zerglings = BWAPI::UnitTypes::Zerg_Zergling;
+	const BWAPI::UnitType mutalisks = BWAPI::UnitTypes::Zerg_Mutalisk;
 	const int zerglingsOwned = Tools::CountUnitsOfType(zerglings, BWAPI::Broodwar->self()->getUnits());
+	const int mutalisksOwned = Tools::CountUnitsOfType(mutalisks, BWAPI::Broodwar->self()->getUnits());
+
 	switch (pData->phase)
 	{
 		default:
-			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
+			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 1;
 		case 0:
-			return false;
 		case 1:
-			return false;
 		case 2:
-			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
+		case 3:
+			return false;
+		case 4:
+			return mutalisksOwned >= pData->nWantedMutalisksTotal;
 	}
 }

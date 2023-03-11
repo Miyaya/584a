@@ -14,21 +14,22 @@ StarterBot::StarterBot()
 	for (auto& startLocation : startLocations)
 		if (startLocation == selfLocation)
 			pData->selfLocation = { startLocation.x * 32, startLocation.y * 32 };
-		else if (startLocation.x < selfLocation.x)
-			pData->enemyLocation = { startLocation.x * 32 - 100, startLocation.y * 32 };
-		else if (startLocation.x > selfLocation.x)
-			pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
+	//else if (startLocation.x < selfLocation.x)
+	//	pData->enemyLocation = { startLocation.x * 32 - 100, startLocation.y * 32 };
+	//else if (startLocation.x > selfLocation.x)
+	//	pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
 		else
 			pData->enemyLocation = { startLocation.x * 32, startLocation.y * 32 };
-	BWAPI::Broodwar->printf("Enemy race: %s", BWAPI::Broodwar->enemy()->getRace().c_str());
+
 	BWAPI::Broodwar->printf("Enemy start location found at (%d, %d)", pData->enemyLocation.x, pData->enemyLocation.y);
 
-	BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
+	BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 12);
 
-	// Build a drone
-	// TODO: add a BT_LEAF?
-	// BT_ACTION_BUILD_ONE_DRONE* pBuildOneDrone = new BT_ACTION_BUILD_ONE_DRONE("BuildOneDrone", pBT);
 
+	//Farming Gas forever
+	BT_DECO_REPEATER* pFarmingGasForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingGas", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS* pNotEnoughWorkersFarmingGas = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS("NotEnoughWorkersFarmingGas", pFarmingGasForeverRepeater);
+	BT_ACTION_SEND_IDLE_WORKER_TO_GAS* pSendWorkerToGas = new BT_ACTION_SEND_IDLE_WORKER_TO_GAS("SendWorkerToGas", pNotEnoughWorkersFarmingGas);
 
 	//Farming Minerals forever
 	BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
@@ -50,10 +51,26 @@ StarterBot::StarterBot()
 	BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
 	BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
 
+	//Build Extractor
+	BT_DECO_REPEATER* pBuildExtractorForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildExtractor", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR* pNotEnoughExtractor = new BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR("NotEnoughExtractor", pBuildExtractorForeverRepeater);
+	BT_ACTION_BUILD_EXTRACTOR* pBuildExtractor = new BT_ACTION_BUILD_EXTRACTOR("BuildExtractor", pNotEnoughExtractor);
+
+	//Build Spire
+	BT_DECO_REPEATER* pBuildSpireForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSpire", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_SPIRE* pNotEnoughSpire = new BT_DECO_CONDITION_NOT_ENOUGH_SPIRE("NotEnoughSpire", pBuildSpireForeverRepeater);
+	BT_ACTION_BUILD_SPIRE* pBuildSpire = new BT_ACTION_BUILD_SPIRE("BuildSpire", pNotEnoughSpire);
+
 	//Training Zerglings
 	BT_DECO_REPEATER* pTrainingZerglingsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingZerglings", pParallelSeq, 0, true, false);
 	BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS* pNotEnoughZerglings = new BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS("NotEnoughZerglings", pTrainingZerglingsForeverRepeater);
-	BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainWorker", pNotEnoughZerglings);
+	//BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainZergling", pNotEnoughZerglings);
+	BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainZergling", pNotEnoughZerglings);
+
+	//Training Mutalisks
+	BT_DECO_REPEATER* pTrainingMutalisksForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingMutalisks", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_MUTALISKS* pNotEnoughMutalisks = new BT_DECO_CONDITION_NOT_ENOUGH_MUTALISKS("NotEnoughMutalisks", pTrainingMutalisksForeverRepeater);
+	BT_ACTION_TRAIN_MUTALISK* pTrainMutalisk = new BT_ACTION_TRAIN_MUTALISK("TrainMutalisk", pNotEnoughMutalisks);
 
 	//Launch Harass
 	BT_DECO_REPEATER* pHarassForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingHarass", pParallelSeq, 0, true, false);
@@ -74,10 +91,14 @@ StarterBot::StarterBot()
 
 	pData->nWantedWorkersTotal = NWANTED_WORKERS_TOTAL;
 	pData->nWantedWorkersFarmingMinerals = NWANTED_WORKERS_FARMING_MINERALS;
+	pData->nWantedWorkersFarmingGas = NWANTED_WORKERS_FARMING_GAS;
 	pData->nWantedOverlordsTotal = NWANTED_OVERLORDS_TOTAL;
 	pData->nWantedZerglingsTotal = NWANTED_ZERGLINGS_TOTAL;
+	pData->nWantedMutalisksTotal = NWANTED_MUTALISKS_TOTAL;
 
 	pData->nWantedSpawningPoolTotal = NWANTED_SPAWNING_POOL_TOTAL;
+	pData->nWantedExtractorTotal = NWANTED_EXTRACTOR_TOTAL;
+	pData->nWantedSpireTotal = NWANTED_SPIRE_TOTAL;
 }
 
 // Called when the bot starts!

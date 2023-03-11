@@ -15,6 +15,19 @@ std::string BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS::GetDescriptio
 bool BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS::IsThereNotEnoughWorkersFarmingMinerals(void *data)
 {
     Data* pData = (Data*)data;
-    
+
+    const int workersOwned = Tools::CountUnitsOfType(BWAPI::UnitTypes::Zerg_Drone, BWAPI::Broodwar->self()->getUnits());
+    switch (pData->phase)
+    {
+        default:
+            pData->nWantedWorkersFarmingMinerals = workersOwned - pData->nWantedWorkersFarmingGas;
+            break;
+        case 0:
+        case 1:
+            pData->nWantedWorkersFarmingMinerals = workersOwned;
+            break;
+    }
+
+    //BWAPI::Broodwar->printf("Minerals: %d", (int)pData->unitsFarmingMinerals.size());
     return (int)pData->unitsFarmingMinerals.size() < pData->nWantedWorkersFarmingMinerals;
 }

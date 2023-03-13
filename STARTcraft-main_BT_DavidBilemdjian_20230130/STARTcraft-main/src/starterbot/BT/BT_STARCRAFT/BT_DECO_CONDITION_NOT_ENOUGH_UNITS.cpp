@@ -21,5 +21,7 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_UNITS::IsThereNotEnoughUnits(void* data)
 	const int zerglingsOwned = Tools::CountUnitsOfType(BWAPI::UnitTypes::Zerg_Zergling, BWAPI::Broodwar->self()->getUnits());
 	const int mutalisksOwned = Tools::CountUnitsOfType(BWAPI::UnitTypes::Zerg_Mutalisk, BWAPI::Broodwar->self()->getUnits());
 
+	BWAPI::Broodwar->printf("zerglingsOwned: %d", zerglingsOwned);
+	BWAPI::Broodwar->printf("zerglingsWanted: %d", pData->nWantedZerglingsTotal);
 	return zerglingsOwned < pData->nWantedZerglingsTotal || mutalisksOwned < pData->nWantedMutalisksTotal;
 }

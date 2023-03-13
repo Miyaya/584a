@@ -20,15 +20,6 @@ bool BT_DECO_CONDITION_READY_TO_ATTACK::IsReadyToAttack(void* data)
 
 	const BWAPI::UnitType zerglings = BWAPI::UnitTypes::Zerg_Zergling;
 	const int zerglingsOwned = Tools::CountUnitsOfType(zerglings, BWAPI::Broodwar->self()->getUnits());
-	switch (pData->phase)
-	{
-		default:
-			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
-		case 0:
-			return false;
-		case 1:
-			return false;
-		case 2:
-			return Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed() < 2;
-	}
+
+	return (zerglingsOwned >= pData->thresholdZerglings);
 }

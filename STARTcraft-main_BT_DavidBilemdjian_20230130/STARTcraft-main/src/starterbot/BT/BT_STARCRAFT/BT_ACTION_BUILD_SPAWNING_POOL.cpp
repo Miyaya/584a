@@ -24,17 +24,13 @@ BT_NODE::State BT_ACTION_BUILD_SPAWNING_POOL::BuildSpawningPool(void* data)
 
 	// let's build a spawning pool
 	const BWAPI::UnitType unitType = BWAPI::UnitTypes::Zerg_Spawning_Pool;
-
-	if (BWAPI::Broodwar->self()->minerals() < 200)
-		return BT_NODE::FAILURE;
-
 	const bool startedBuilding = Tools::BuildBuilding(unitType);
 
 	if (startedBuilding)
+	{
 		BWAPI::Broodwar->printf("Started Building %s", unitType.getName().c_str());
-
-	if (pData->nWantedWorkersTotal < 6)
-		pData->nWantedWorkersTotal = 6;
+		pData->nWantedWorkersTotal += 1;
+	}
 
 	return startedBuilding ? BT_NODE::SUCCESS : BT_NODE::FAILURE;
 }

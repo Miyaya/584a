@@ -18,12 +18,9 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_WORKERS::IsThereNotEnoughWorkers(void* data)
 {
 	Data* pData = (Data*)data;
 
-	switch (pData->phase)
-	{
-		case 0:
-			if (BWAPI::Broodwar->self()->minerals() >= 200)
-				return false;
-	}
+	if (!pData->spawningPoolBuilt && BWAPI::Broodwar->self()->minerals() >= 150)
+			return false;
+
 
 	const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
 	const int workersOwned = Tools::CountUnitsOfType(workerType, BWAPI::Broodwar->self()->getUnits());

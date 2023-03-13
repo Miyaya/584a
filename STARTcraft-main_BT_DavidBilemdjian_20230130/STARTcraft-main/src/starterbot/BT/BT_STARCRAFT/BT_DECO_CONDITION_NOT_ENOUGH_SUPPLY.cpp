@@ -25,17 +25,6 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_SUPPLY::IsThereNotEnoughSupply(void *data)
     const int unusedSupply = Tools::GetTotalSupply(true) - BWAPI::Broodwar->self()->supplyUsed();
 
     // If we have a sufficient amount of supply, we don't need to do anything
-    switch (pData->phase)
-    {
-        default:
-            return false;
-        case 0:
-            return false;
-        case 1:
-            return unusedSupply < pData->thresholdSupply;
-        case 2:
-            return unusedSupply < pData->thresholdSupply;
-    }
     return unusedSupply < pData->thresholdSupply;
 
 }

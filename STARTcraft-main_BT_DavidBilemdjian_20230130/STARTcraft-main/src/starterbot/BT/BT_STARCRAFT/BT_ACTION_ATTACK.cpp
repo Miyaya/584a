@@ -27,7 +27,8 @@ BT_NODE::State BT_ACTION_ATTACK::Attack(void* data)
 	BWAPI::Unitset combatUnits;
 
 	for (auto& unit : BWAPI::Broodwar->self()->getUnits())
-		if (unit->getType().canAttack() && unit->getType().canMove() && !unit->getType().isWorker())
+		//if (unit->getType().canAttack() && unit->getType().canMove() && !unit->getType().isWorker())
+		if (unit->getType() == BWAPI::UnitTypes::Zerg_Zergling)
 			combatUnits.insert(unit);
 
 	//_sleep(10);
@@ -39,7 +40,7 @@ BT_NODE::State BT_ACTION_ATTACK::Attack(void* data)
 			continue;
 		else
 			unit->patrol(pData->enemyLocation);
-		combatUnits.move(pData->enemyLocation);
+		//combatUnits.move(pData->enemyLocation);
 
 	if (combatUnits.empty())
 		return BT_NODE::SUCCESS;

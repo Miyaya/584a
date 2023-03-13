@@ -21,11 +21,5 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS::IsThereNotEnoughZerglings(void* dat
 	const BWAPI::UnitType unitType = BWAPI::UnitTypes::Zerg_Zergling;
 	const int zerglingsOwned = Tools::CountUnitsOfType(unitType, BWAPI::Broodwar->self()->getUnits());
 
-	/*switch (pData->phase)
-	{
-		case 0:
-		case 1:
-			;
-	}*/
 	return zerglingsOwned < pData->nWantedZerglingsTotal;
 }

@@ -14,21 +14,16 @@ StarterBot::StarterBot()
 	for (auto& startLocation : startLocations)
 		if (startLocation == selfLocation)
 			pData->selfLocation = { startLocation.x * 32, startLocation.y * 32 };
-		else if (startLocation.x < selfLocation.x)
-			pData->enemyLocation = { startLocation.x * 32 - 100, startLocation.y * 32 };
-		else if (startLocation.x > selfLocation.x)
-			pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
+		//else if (startLocation.x < selfLocation.x)
+		//	pData->enemyLocation = { startLocation.x * 32 - 100, startLocation.y * 32 };
+		//else if (startLocation.x > selfLocation.x)
+		//	pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
 		else
 			pData->enemyLocation = { startLocation.x * 32, startLocation.y * 32 };
 	BWAPI::Broodwar->printf("Enemy race: %s", BWAPI::Broodwar->enemy()->getRace().c_str());
 	BWAPI::Broodwar->printf("Enemy start location found at (%d, %d)", pData->enemyLocation.x, pData->enemyLocation.y);
 
 	BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
-
-	// Build a drone
-	// TODO: add a BT_LEAF?
-	// BT_ACTION_BUILD_ONE_DRONE* pBuildOneDrone = new BT_ACTION_BUILD_ONE_DRONE("BuildOneDrone", pBT);
-
 
 	//Farming Minerals forever
 	BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
@@ -50,34 +45,36 @@ StarterBot::StarterBot()
 	BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
 	BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
 
+	//Build Hatchery
+	BT_DECO_REPEATER* pBuildHatcheryForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildHatchery", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_HATCHERY* pNotEnoughHatchery = new BT_DECO_CONDITION_NOT_ENOUGH_HATCHERY("NotEnoughHatchery", pBuildHatcheryForeverRepeater);
+	BT_ACTION_BUILD_HATCHERY* pBuildHatchery = new BT_ACTION_BUILD_HATCHERY("BuildHatchery", pNotEnoughHatchery);
+
 	//Training Zerglings
 	BT_DECO_REPEATER* pTrainingZerglingsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingZerglings", pParallelSeq, 0, true, false);
 	BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS* pNotEnoughZerglings = new BT_DECO_CONDITION_NOT_ENOUGH_ZERGLINGS("NotEnoughZerglings", pTrainingZerglingsForeverRepeater);
 	BT_ACTION_TRAIN_ZERGLING* pTrainZergling = new BT_ACTION_TRAIN_ZERGLING("TrainWorker", pNotEnoughZerglings);
-
-	//Launch Harass
-	BT_DECO_REPEATER* pHarassForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingHarass", pParallelSeq, 0, true, false);
-	BT_DECO_CONDITION_READY_TO_HARASS* pReadyToHarass = new BT_DECO_CONDITION_READY_TO_HARASS("ReadyToHarass", pHarassForeverRepeater);
-	BT_ACTION_HARASS* pHarass = new BT_ACTION_HARASS("Harass", pReadyToHarass);
 
 	//Launch Attack
 	BT_DECO_REPEATER* pAttackForeverRepeater = new BT_DECO_REPEATER("RepeatForeverLaunchingAttack", pParallelSeq, 0, true, false);
 	BT_DECO_CONDITION_READY_TO_ATTACK* pReadyToAttack = new BT_DECO_CONDITION_READY_TO_ATTACK("ReadyToAttack", pAttackForeverRepeater);
 	BT_ACTION_ATTACK* pAttack = new BT_ACTION_ATTACK("Attack", pReadyToAttack);
 
-	pData->phase = 0;
+	pData->spawningPoolBuilt = 0;
 
 	pData->currMinerals = 0;
 	pData->thresholdMinerals = THRESHOLD1_MINERALS;
 	pData->currSupply = 0;
 	pData->thresholdSupply = THRESHOLD1_UNUSED_SUPPLY;
+	pData->thresholdZerglings = NWANTED_ZERGLINGS_TOTAL;
 
 	pData->nWantedWorkersTotal = NWANTED_WORKERS_TOTAL;
 	pData->nWantedWorkersFarmingMinerals = NWANTED_WORKERS_FARMING_MINERALS;
-	pData->nWantedOverlordsTotal = NWANTED_OVERLORDS_TOTAL;
 	pData->nWantedZerglingsTotal = NWANTED_ZERGLINGS_TOTAL;
 
 	pData->nWantedSpawningPoolTotal = NWANTED_SPAWNING_POOL_TOTAL;
+	pData->nWantedHatcheryTotal = NWANTED_HATCHERY_TOTAL;
+	
 }
 
 // Called when the bot starts!

@@ -23,7 +23,7 @@ BT_NODE::State BT_ACTION_SEND_IDLE_WORKER_TO_GAS::SendIdleWorkerToGas(void* data
 	Data* pData = (Data*)data;
 
 	const BWAPI::Unitset& myUnits = BWAPI::Broodwar->self()->getUnits();
-	BWAPI::Unit extractor;
+	BWAPI::Unit extractor = nullptr;
 
 	for (auto& unit : myUnits)
 		if (unit->getType() == BWAPI::UnitTypes::Zerg_Extractor)
@@ -31,6 +31,12 @@ BT_NODE::State BT_ACTION_SEND_IDLE_WORKER_TO_GAS::SendIdleWorkerToGas(void* data
 			extractor = unit;
 			break;
 		}
+
+	if (extractor == nullptr)
+	{
+		pData->extractorBuilt = 0;
+		return BT_NODE::FAILURE;
+	 }
 
 	for (auto& unit : myUnits)
 		// Check the unit type, if it is an idle worker, then we want to send it somewhere

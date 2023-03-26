@@ -2,40 +2,49 @@
 #include "../../Tools.h"
 #include "../Data.h"
 
-BT_ACTION_TRAIN_WORKER::BT_ACTION_TRAIN_WORKER(std::string name,BT_NODE* parent)
-    :  BT_ACTION(name,parent) {}
+BT_ACTION_TRAIN_WORKER::BT_ACTION_TRAIN_WORKER(std::string name, BT_NODE* parent)
+	: BT_ACTION(name, parent)
+{
+}
 
 BT_NODE::State BT_ACTION_TRAIN_WORKER::Evaluate(void* data)
 {
-    return ReturnState(TrainWorker(data));
+	return ReturnState(TrainWorker(data));
 }
 
 std::string BT_ACTION_TRAIN_WORKER::GetDescription()
 {
-    return "TRAIN WORKER";
+	return "TRAIN WORKER";
 }
 
 
 BT_NODE::State BT_ACTION_TRAIN_WORKER::TrainWorker(void* data)
 {
-    Data* pData = (Data*)data;
+	Data* pData = (Data*)data;
 
-    const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
-    const BWAPI::Unit myDepot = Tools::GetDepot();
+	const BWAPI::UnitType workerType = BWAPI::Broodwar->self()->getRace().getWorker();
+	const BWAPI::Unit myDepot = Tools::GetDepot();
 
-    // if we have a valid depot unit and it's currently not training something, train a worker
-    // there is no reason for a bot to ever use the unit queueing system, it just wastes resources
-    /*for (auto& unit : BWAPI::Broodwar->self()->getUnits())
-        if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Build)
-            return BT_NODE::FAILURE;*/
+	// if we have a valid depot unit and it's currently not training something, train a worker
+	// there is no reason for a bot to ever use the unit queueing system, it just wastes resources
+	/*for (auto& unit : BWAPI::Broodwar->self()->getUnits())
+		if (unit->getLastCommand().getType() == BWAPI::UnitCommandTypes::Build)
+			return BT_NODE::FAILURE;*/
 
-    if (myDepot && !myDepot->isTraining()) { 
-        myDepot->train(workerType);
-        BWAPI::Error error = BWAPI::Broodwar->getLastError();
-        if(error!=BWAPI::Errors::None)
-            return BT_NODE::FAILURE;
-        else return BT_NODE::SUCCESS;
-    }
+	if (myDepot && !myDepot->isTraining())
+	{
+		myDepot->train(workerType);
+		BWAPI::Error error = BWAPI::Broodwar->getLastError();
+		if (error != BWAPI::Errors::None)
+			return BT_NODE::FAILURE;
+		//if((pData->extractorBuilt == 1) && (pData->upgradeFinished == 0))
+		//	pData->nWantedWorkersFarmingGas += 1;
+		//else
+		//	pData->nWantedWorkersFarmingMinerals += 1;
 
-    return BT_NODE::FAILURE;
+		//std::cout << pData->nWantedWorkersFarmingGas << "\n";
+		return BT_NODE::SUCCESS;
+	}
+
+	return BT_NODE::FAILURE;
 }

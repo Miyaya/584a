@@ -29,9 +29,7 @@ BT_NODE::State BT_ACTION_BUILD_HATCHERY::BuildHatchery(void* data)
 	if (startedBuilding)
 	{
 		BWAPI::Broodwar->printf("Started Building %s", unitType.getName().c_str());
-		pData->nWantedWorkersTotal += 3;
-		pData->nWantedWorkersFarmingMinerals += 3;
-		pData->thresholdZerglings += 4;
+		pData->nWantedWorkersTotal += 1;
 	}
 
 	return startedBuilding ? BT_NODE::SUCCESS : BT_NODE::FAILURE;

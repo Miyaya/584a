@@ -18,9 +18,9 @@ bool BT_DECO_CONDITION_NOT_ENOUGH_HATCHERY::IsThereNotEnoughHatchery(void* data)
 {
 	Data* pData = (Data*)data;
 
-	if (BWAPI::Broodwar->self()->minerals() < 300)
+	if (BWAPI::Broodwar->self()->minerals() < 350)
 		return false;
-
+	return true;
 	// Get the amount of spawning pool we currently have
 	const BWAPI::UnitType unitType = BWAPI::UnitTypes::Zerg_Hatchery;
 	const int hatcheryOwned = Tools::CountUnitsOfType(unitType, BWAPI::Broodwar->self()->getUnits());

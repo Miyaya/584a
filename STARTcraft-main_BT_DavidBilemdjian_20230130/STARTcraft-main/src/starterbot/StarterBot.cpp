@@ -20,7 +20,6 @@ StarterBot::StarterBot()
 		//	pData->enemyLocation = { startLocation.x * 32 + 100, startLocation.y * 32 };
 		else
 			pData->enemyLocation = { startLocation.x * 32, startLocation.y * 32 };
-	BWAPI::Broodwar->printf("Enemy race: %s", BWAPI::Broodwar->enemy()->getRace().c_str());
 	BWAPI::Broodwar->printf("Enemy start location found at (%d, %d)", pData->enemyLocation.x, pData->enemyLocation.y);
 
 	BT_PARALLEL_SEQUENCER* pParallelSeq = new BT_PARALLEL_SEQUENCER("MainParallelSequence", pBT, 10);
@@ -29,6 +28,11 @@ StarterBot::StarterBot()
 	BT_DECO_REPEATER* pFarmingMineralsForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingMinerals", pParallelSeq, 0, true, false);
 	BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS* pNotEnoughWorkersFarmingMinerals = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_MINERALS("NotEnoughWorkersFarmingMinerals", pFarmingMineralsForeverRepeater);
 	BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS* pSendWorkerToMinerals = new BT_ACTION_SEND_IDLE_WORKER_TO_MINERALS("SendWorkerToMinerals", pNotEnoughWorkersFarmingMinerals);
+
+	//Farming Gas forever
+	BT_DECO_REPEATER* pFarmingGasForeverRepeater = new BT_DECO_REPEATER("RepeatForeverFarmingGas", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS* pNotEnoughWorkersFarmingGas = new BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS("NotEnoughWorkersFarmingGas", pFarmingGasForeverRepeater);
+	BT_ACTION_SEND_IDLE_WORKER_TO_GAS* pSendWorkerToGas = new BT_ACTION_SEND_IDLE_WORKER_TO_GAS("SendWorkerToGas", pNotEnoughWorkersFarmingGas);
 
 	//Training Workers
 	BT_DECO_REPEATER* pTrainingWorkersForeverRepeater = new BT_DECO_REPEATER("RepeatForeverTrainingWorkers", pParallelSeq, 0, true, false);
@@ -44,6 +48,11 @@ StarterBot::StarterBot()
 	BT_DECO_REPEATER* pBuildSpawningPoolForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildSpawningPool", pParallelSeq, 0, true, false);
 	BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL* pNotEnoughSpawningPool = new BT_DECO_CONDITION_NOT_ENOUGH_SPAWNING_POOL("NotEnoughSpawningPool", pBuildSpawningPoolForeverRepeater);
 	BT_ACTION_BUILD_SPAWNING_POOL* pBuildSpawningPool = new BT_ACTION_BUILD_SPAWNING_POOL("BuildSpawningPool", pNotEnoughSpawningPool);
+
+	//Build Extractor
+	BT_DECO_REPEATER* pBuildExtractorForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildExtractor", pParallelSeq, 0, true, false);
+	BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR* pNotEnoughExtractor = new BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR("NotEnoughExtractor", pBuildExtractorForeverRepeater);
+	BT_ACTION_BUILD_EXTRACTOR* pBuildExtractor = new BT_ACTION_BUILD_EXTRACTOR("BuildExtractor", pNotEnoughExtractor);
 
 	//Build Hatchery
 	BT_DECO_REPEATER* pBuildHatcheryForeverRepeater = new BT_DECO_REPEATER("RepeatForeverBuildHatchery", pParallelSeq, 0, true, false);
@@ -61,18 +70,22 @@ StarterBot::StarterBot()
 	BT_ACTION_ATTACK* pAttack = new BT_ACTION_ATTACK("Attack", pReadyToAttack);
 
 	pData->spawningPoolBuilt = 0;
+	pData->extractorBuilt = 0;
+	pData->upgradeFinished = 0;
 
 	pData->currMinerals = 0;
 	pData->thresholdMinerals = THRESHOLD1_MINERALS;
 	pData->currSupply = 0;
 	pData->thresholdSupply = THRESHOLD1_UNUSED_SUPPLY;
-	pData->thresholdZerglings = NWANTED_ZERGLINGS_TOTAL;
+	pData->thresholdZerglings = 6;
 
 	pData->nWantedWorkersTotal = NWANTED_WORKERS_TOTAL;
 	pData->nWantedWorkersFarmingMinerals = NWANTED_WORKERS_FARMING_MINERALS;
+	pData->nWantedWorkersFarmingGas = 0;
 	pData->nWantedZerglingsTotal = NWANTED_ZERGLINGS_TOTAL;
 
 	pData->nWantedSpawningPoolTotal = NWANTED_SPAWNING_POOL_TOTAL;
+	pData->nWantedExtractorTotal = NWANTED_EXTRACTOR_TOTAL;
 	pData->nWantedHatcheryTotal = NWANTED_HATCHERY_TOTAL;
 	
 }

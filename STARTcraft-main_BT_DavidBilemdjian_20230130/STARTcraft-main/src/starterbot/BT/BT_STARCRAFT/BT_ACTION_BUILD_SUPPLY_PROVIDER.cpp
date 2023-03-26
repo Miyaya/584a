@@ -33,7 +33,10 @@ BT_NODE::State BT_ACTION_BUILD_SUPPLY_PROVIDER::BuildSupplyProvider(void* data)
         else
         {
             BWAPI::Broodwar->printf("Started Building %s", supplyProviderType.getName().c_str());
-            pData->nWantedZerglingsTotal += 16;
+            pData->nWantedWorkersTotal += 3;
+            pData->nWantedWorkersFarmingMinerals = pData->nWantedWorkersTotal - pData->nWantedWorkersFarmingGas;
+            pData->thresholdZerglings += 6;
+            pData->nWantedZerglingsTotal += 10;
             pData->nWantedHatcheryTotal += 1;
             return BT_NODE::SUCCESS;
         }

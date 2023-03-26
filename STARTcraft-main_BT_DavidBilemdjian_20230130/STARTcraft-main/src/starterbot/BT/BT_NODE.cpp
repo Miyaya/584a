@@ -22,9 +22,11 @@ BT_NODE::BT_NODE(std::string name,BT_NODE* parent, size_t childrenMaxCount) :Nam
 void BT_NODE::Log(const std::string msg)
 {
 #ifdef BT_DEBUG_VERBOSE
-    for (size_t i = 0; i < Depth; i++)
-        std::cout << "\t";
-    std::cout << Name << " " << GetDescription() << " " << msg << "\n";
+    //for (size_t i = 0; i < Depth; i++)
+    //    std::cout << "\t";
+    if(msg.compare("SUCCESS") == 0)
+        std::cout << Name << " " << GetDescription() << " " << msg << "\n";
+    //std::cout <<  msg << "\n";
 #endif // BT_DEBUG_VERBOSE 
 }
 

@@ -99,6 +99,21 @@
     <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_HATCHERY.cpp">
       <Filter>BT\BT_STARCRAFT</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_BUILD_EXTRACTOR.cpp">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_HARASS.cpp">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_SEND_IDLE_WORKER_TO_GAS.cpp">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR.cpp">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS.cpp">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\starterbot\Grid.hpp" />
@@ -203,6 +218,21 @@
       <Filter>BT\BT_STARCRAFT</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_HATCHERY.h">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_BUILD_EXTRACTOR.h">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_HARASS.h">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_ACTION_SEND_IDLE_WORKER_TO_GAS.h">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_EXTRACTOR.h">
+      <Filter>BT\BT_STARCRAFT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\starterbot\BT\BT_STARCRAFT\BT_DECO_CONDITION_NOT_ENOUGH_WORKERS_FARMING_GAS.h">
       <Filter>BT\BT_STARCRAFT</Filter>
     </ClInclude>
   </ItemGroup>
